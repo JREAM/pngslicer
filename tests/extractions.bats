@@ -64,3 +64,40 @@ teardown() {
   [ "$status" -eq 1 ]
   [[ "${lines[0]}" == *"status: error"* ]]
 }
+
+@test "Generates valid JSON with --json flag" {
+  run "$BIN" "$FIXTURES/trees-12.png" -o "$OUT/json-test.png" --json
+
+  [ "$status" -eq 0 ]
+  # In C code we use \n so lines array in BATS splits them
+  [[ "${lines[1]}" == *"\"status\": \"success\""* ]]
+  [[ "${lines[2]}" == *"\"src\": \"$FIXTURES/trees-12.png\""* ]]
+  [[ "${lines[3]}" == *"\"output\": ["* ]]
+
+  files=("$OUT"/json-test-*.png)
+  [ "${#files[@]}" -eq 12 ]
+}
+
+@test "Starts numbering at 10 with --start-at 10" {
+  run "$BIN" "$FIXTURES/trees-12.png" -o "$OUT/start.png" --start-at 10
+
+  [ "$status" -eq 0 ]
+  # Check if the first and last files are correctly numbered
+  [ -f "$OUT/start-10.png" ]
+  [ -f "$OUT/start-21.png" ]
+}
+
+@test "Overwrites existing files with --force flag" {
+  # Create a dummy file that would conflict
+  touch "$OUT/force-1.png"
+  
+  # This should succeed with -f and overwrite it
+  run "$BIN" "$FIXTURES/trees-12.png" -o "$OUT/force.png" -f
+
+  [ "$status" -eq 0 ]
+  # Check if files were created
+  [ -f "$OUT/force-1.png" ]
+  # The file should now be a real PNG instead of our touched dummy
+  file_type=$(file -b "$OUT/force-1.png")
+  [[ "$file_type" == *"PNG image"* ]]
+}

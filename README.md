@@ -14,15 +14,39 @@ By leveraging ImageMagick's Connected Components labeling, it securely ignores t
 
 ## Features
 
-- **Fast**: Written in C and optimized with OpenMP via ImageMagick.
-- **Auto-Cropping**: Isolates and crops individual sprites dynamically based on alpha transparency.
-- **Noise Filtering**: Easily filter out stray pixels or noise using `--min-width`, `--min-height`, or only `--min-area`.
-- **Flexible Naming**: Supports prefix/suffix numbering through format strings (e.g., `asset_%d.png`).
-- **JSON Support**: Native `--json` output formatted perfectly for programmatic use or web APIs.
+<details>
+<summary><strong>⚡ Fast</strong></summary>
+Written in C and optimized with OpenMP via ImageMagick for lightning-fast concurrent processing.
+</details>
+
+<details>
+<summary><strong>📐 Auto-Cropping</strong></summary>
+Intelligently isolates and crops individual sprites dynamically based on alpha transparency. No more manually slicing sprite sheets!
+</details>
+
+<details>
+<summary><strong>🧹 Noise Filtering</strong></summary>
+Easily filter out stray pixels or noise using `--min-width`, `--min-height`, or `--min-area` constraints.
+</details>
+
+<details>
+<summary><strong>🔢 Flexible Numbering</strong></summary>
+Supports prefix/suffix numbering through format strings (e.g., `asset_%d.png`) and custom starting indices with `--start-at`.
+</details>
+
+<details>
+<summary><strong>💾 JSON Support</strong></summary>
+Native `--json` output formatted perfectly for programmatic use, automation pipelines, or web APIs.
+</details>
+
+<details>
+<summary><strong>🛡️ Overwrite Protection</strong></summary>
+Prevents accidental data loss by prompting before overwriting existing files, unless silenced with the `--force` flag.
+</details>
 
 ## Requirements
 
-PNGSlicer relies on the ImageMagick 6 `MagickWand` C API. You can safely build and run this on almost any Linux distribution or macOS.
+PNGSlicer is primarily designed for **ImageMagick 6** (`MagickWand`). While the Makefile attempts to find IM7 headers, the core logic relies on ImageMagick 6 data structures. If you are on a system with IM7, it is recommended to install the IM6 compatibility headers.
 
 ### Ubuntu / Debian
 ```sh
@@ -78,6 +102,7 @@ The `-o` flag is extremely flexible. If you include a `%d`, the program injects 
 - **Numbered Prefix:** `./pngslicer in.png -o %d_asset.png` ➔ `1_asset.png`, `2_asset.png`
 - **Numbered Suffix (Explicit):** `./pngslicer in.png -o asset_%d.png` ➔ `asset_1.png`, `asset_2.png`
 - **Directory Output:** `./pngslicer in.png -o out/` ➔ `out/in-1.png`, `out/in-2.png`
+- **Custom Start Index:** `./pngslicer in.png -o asset.png --start-at 5` ➔ `asset-5.png`, `asset-6.png`
 
 ### Configuration Flags
 
@@ -87,6 +112,8 @@ The `-o` flag is extremely flexible. If you include a `%d`, the program injects 
 | `-w, --min-width` | Smallest allowed width for an extracted image (Filters noise/lines). Default is `50`. |
 | `-e, --min-height`| Smallest allowed height for an extracted image. Default is `50`. |
 | `-a, --min-area` | Smallest allowed absolute area (width * height). Set this instead of w/h to match by payload size. |
+| `-s, --start-at` | The number to start the counter at. Default is `1`. |
+| `-f, --force` | Overwrite existing files without prompting for confirmation. |
 | `-j, --json` | Changes terminal output to a structured JSON response (useful for pipelines). |
 
 ### Example Run
