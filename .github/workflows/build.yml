@@ -1,0 +1,25 @@
+name: C/C++ Build and Test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libmagickwand-dev bats pkg-config
+
+    - name: Build with Makefile
+      run: make
+
+    - name: Run BATS tests
+      run: bats tests/extractions.bats
