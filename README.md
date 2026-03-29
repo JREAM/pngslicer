@@ -1,5 +1,5 @@
 <div align="center">
-![PNGSlicer](logo.png)
+<img alt="PNGSlicer" src="https://github.com/JREAM/pngslicer/blob/main/logo.png?raw=true)" width="50%" />
 </div>
 
 **PNGSlicer** is a fast, C-based command-line utility that intelligently analyzes a transparent PNG image and extracts individual, disjointed elements (like sprites or icons) into their own separate image files.
@@ -125,12 +125,14 @@ bats -f "12" tests/extractions.bats
 
 ## License
 
-This project is licensed under the **MIT License**.
-
-Open Source [MIT](LICENSE.md).
+This project is licensed under the [**MIT License**](LICENSE.md).
 
 ---
 
-![JREAM](https://jream.com/jream.jpg)
+<div align="center">
+  <img alt="JREAM" src="https://jream.com/jream.jpg" />
 
-&copy;2016 Jesse Boyer [https://jream.com](https://jream.com)[JREAM]
+&copy;2016 Jesse Boyer [JREAM]([JREAM](https://jream.com))
+
+</div>
+
