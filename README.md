@@ -1,4 +1,6 @@
-# PNGSlicer
+<div align="center">
+![PNGSlicer](logo.png)
+</div>
 
 **PNGSlicer** is a fast, C-based command-line utility that intelligently analyzes a transparent PNG image and extracts individual, disjointed elements (like sprites or icons) into their own separate image files.
 
@@ -6,10 +8,11 @@ By leveraging ImageMagick's Connected Components labeling, it securely ignores t
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![C](https://img.shields.io/badge/language-C-orange.svg)
+[![C/C++ Build and Test](https://github.com/JREAM/pngslicer/actions/workflows/build.yml/badge.svg)](https://github.com/JREAM/pngslicer/actions/workflows/build.yml)
 
 ---
 
-## 🎯 Features
+## Features
 
 - **Fast**: Written in C and optimized with OpenMP via ImageMagick.
 - **Auto-Cropping**: Isolates and crops individual sprites dynamically based on alpha transparency.
@@ -17,7 +20,7 @@ By leveraging ImageMagick's Connected Components labeling, it securely ignores t
 - **Flexible Naming**: Supports prefix/suffix numbering through format strings (e.g., `asset_%d.png`).
 - **JSON Support**: Native `--json` output formatted perfectly for programmatic use or web APIs.
 
-## 🛠 Prerequisites
+## Requirements
 
 PNGSlicer relies on the ImageMagick 6 `MagickWand` C API. You can safely build and run this on almost any Linux distribution or macOS.
 
@@ -45,7 +48,7 @@ brew install pkg-config imagemagick@6
 export PKG_CONFIG_PATH="/usr/local/opt/imagemagick@6/lib/pkgconfig"
 ```
 
-## 🚀 Build Instructions
+## Build Instructions
 
 A `Makefile` is provided to automatically detect the right bindings using `pkg-config`:
 
@@ -61,7 +64,7 @@ make clean && make
 sudo cp pngslicer /usr/local/bin/
 ```
 
-## 📖 Usage
+## Usage
 
 ```sh
 pngslicer <input.png> -o <output_pattern> [options]
@@ -104,7 +107,7 @@ The `-o` flag is extremely flexible. If you include a `%d`, the program injects 
 }
 ```
 
-## 🧪 Testing
+## Testing
 
 For a command-line tool like this, **Bash Automated Testing System ([BATS](https://github.com/bats-core/bats-core))** is the industry standard for integration tests.
 
@@ -122,9 +125,12 @@ bats -f "12" tests/extractions.bats
 
 ## License
 
+This project is licensed under the **MIT License**.
+
 Open Source [MIT](LICENSE.md).
 
 ---
 
-This project is licensed under the **MIT License**.
-&copy; 2016 JREAM
+![JREAM](https://jream.com/jream.jpg)
+
+&copy;2016 Jesse Boyer [https://jream.com](https://jream.com)[JREAM]
