@@ -2,12 +2,27 @@
 
 setup() {
   # BATS_TEST_DIRNAME is automatically provided by BATS and points to the folder containing this test
-  BIN="$BATS_TEST_DIRNAME/../pngslicer"
+  # Using realpath ensures we have a clean absolute path without '..'
+  ROOT_DIR=$(realpath "$BATS_TEST_DIRNAME/..")
+  BIN="$ROOT_DIR/pngslicer"
   FIXTURES="$BATS_TEST_DIRNAME/fixtures"
-  OUT="$BATS_TEST_DIRNAME/../out/bats-test"
+  OUT="$ROOT_DIR/out/bats-test"
 
   # Ensure the binary is built
-  make -C "$BATS_TEST_DIRNAME/.."
+  make -C "$ROOT_DIR"
+
+  # Debug info if binary is missing or not executable
+  if [[ ! -x "$BIN" ]]; then
+    echo "--- DIAGNOSTIC INFO ---"
+    echo "Current directory: $(pwd)"
+    echo "ROOT_DIR: $ROOT_DIR"
+    echo "BIN: $BIN"
+    ls -la "$ROOT_DIR"
+    file "$BIN" || echo "file command failed"
+    ldd "$BIN" || echo "ldd command failed"
+    echo "-----------------------"
+    return 1
+  fi
 
   # Prepare fresh output folder
   rm -rf "$OUT"

@@ -16,10 +16,20 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y libmagickwand-dev bats pkg-config
+        sudo apt-get install -y libmagickwand-dev pkg-config
 
     - name: Build with Makefile
-      run: make
+      run: |
+        make
+        if [ ! -f pngslicer ]; then
+          echo "ERROR: pngslicer binary not found after make"
+          exit 1
+        fi
+        ls -l pngslicer
+        ldd pngslicer
+
+    - name: Setup BATS
+      uses: bats-core/bats-action@2.0.0
 
     - name: Run BATS tests
       run: bats tests/extractions.bats

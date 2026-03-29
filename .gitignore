@@ -1,4 +1,6 @@
-out/*.png
+# Build artifacts
+pngslicer
+out/
 
 # Prerequisites
 *.d

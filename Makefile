@@ -2,17 +2,17 @@ CC = gcc
 TARGET = pngslicer
 SRC = pngslicer.c
 
-# Detect all possible ImageMagick 6/7 paths
-IM_INCLUDE = /usr/include/ImageMagick-6
-IM7_INCLUDE = /usr/include/ImageMagick-7
+# Get flags from pkg-config, with error check
+MAGICK_CFLAGS := $(shell pkg-config --cflags MagickWand 2>/dev/null || pkg-config --cflags ImageMagick 2>/dev/null)
+MAGICK_LIBS := $(shell pkg-config --libs MagickWand 2>/dev/null || pkg-config --libs ImageMagick 2>/dev/null)
 
-# Get flags from pkg-config (default)
-PKG_CFLAGS = $(shell pkg-config --cflags MagickWand 2>/dev/null || pkg-config --cflags ImageMagick 2>/dev/null)
-PKG_LIBS = $(shell pkg-config --libs MagickWand 2>/dev/null || pkg-config --libs ImageMagick 2>/dev/null)
+ifeq ($(MAGICK_LIBS),)
+$(error MagickWand or ImageMagick not found via pkg-config. Install libmagickwand-dev)
+endif
 
-# Fallback headers if pkg-config is not available or incomplete
-CFLAGS = $(PKG_CFLAGS) -I$(IM_INCLUDE) -I$(IM7_INCLUDE) -Wall -O2
-LIBS = $(PKG_LIBS)
+# Standard flags
+CFLAGS = $(MAGICK_CFLAGS) -Wall -Wextra -O2
+LIBS = $(MAGICK_LIBS)
 
 # Default build target
 all: $(TARGET)
@@ -22,12 +22,12 @@ $(TARGET): $(SRC)
 
 clean:
 	rm -f $(TARGET)
-	rm -f *-*.png
+	rm -rf out/bats-test
 
 help:
 	@echo "Usage:"
-	@echo "  make         - Build the pngextract utility"
-	@echo "  make clean   - Remove the binary and extracted PNGs"
+	@echo "  make         - Build the $(TARGET) utility"
+	@echo "  make clean   - Remove the binary and test artifacts"
 	@echo "  make help    - Show this message"
 
 .PHONY: all clean help
