@@ -58,7 +58,7 @@ teardown() {
 
 @test "Extracts 0 sprites from trees-0.png" {
   # We use huge filters to ensure nothing is found, triggering an error exit code
-  run "$BIN" "$FIXTURES/trees-0.png" -o "$OUT/" -w 5000 -e 5000
+  run "$BIN" "$FIXTURES/trees-0.png" -o "$OUT/" -w 5000 -h 5000
 
   # A failure to extract valid sub-images exits with 1
   [ "$status" -eq 1 ]
@@ -87,12 +87,12 @@ teardown() {
   [ -f "$OUT/start-21.png" ]
 }
 
-@test "Overwrites existing files with --force flag" {
+@test "Overwrites existing files with --overwrite" {
   # Create a dummy file that would conflict
   touch "$OUT/force-1.png"
   
   # This should succeed with -f and overwrite it
-  run "$BIN" "$FIXTURES/trees-12.png" -o "$OUT/force.png" -f
+  run "$BIN" "$FIXTURES/trees-12.png" -o "$OUT/force.png" --overwrite
 
   [ "$status" -eq 0 ]
   # Check if files were created

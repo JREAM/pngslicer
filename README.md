@@ -91,35 +91,38 @@ sudo cp pngslicer /usr/local/bin/
 ## Usage
 
 ```sh
-pngslicer <input.png> -o <output_pattern> [options]
+pngslicer <input.png> [options]
 ```
 
 ### Naming Conventions
 
-The `-o` flag is extremely flexible. If you include a `%d`, the program injects the sprite number.
+Default output directory is **`./pngslicer/`** (`input_basename-1.png`, …). Use **`-o`** for a directory (`-o out/`), a legacy path template (`-o sub/plop_%d.png`, `-o sub/base.png`), or **`-d`** for a directory only (`.`, `./out`, `out/`). Use **`-f` / `--format`** with exactly one **`%d`** for the filename under that directory (e.g. `-d ./export -f '%d-sprite.png'`).
 
-- **Numbered Suffix (Default):** `./pngslicer in.png -o asset.png` ➔ `asset-1.png`, `asset-2.png`
-- **Numbered Prefix:** `./pngslicer in.png -o %d_asset.png` ➔ `1_asset.png`, `2_asset.png`
-- **Numbered Suffix (Explicit):** `./pngslicer in.png -o asset_%d.png` ➔ `asset_1.png`, `asset_2.png`
-- **Directory Output:** `./pngslicer in.png -o out/` ➔ `out/in-1.png`, `out/in-2.png`
-- **Custom Start Index:** `./pngslicer in.png -o asset.png --start-at 5` ➔ `asset-5.png`, `asset-6.png`
+- **Numbered Suffix (Legacy `-o`):** `pngslicer in.png -o asset.png` ➔ `asset-1.png`, `asset-2.png` (in the current directory unless combined with `-d`).
+- **With `%d`:** `pngslicer in.png -o %d_asset.png` ➔ `1_asset.png`, `2_asset.png`
+- **Directory Output:** `pngslicer in.png -o out/` ➔ `out/in-1.png`, `out/in-2.png`
+- **Format:** `pngslicer in.png -d out -f '%d-tile.png'` ➔ `out/1-tile.png`, …
+
+Run **`pngslicer --help`** for full options. **`--overwrite`** (long form only) skips the interactive prompt when files already exist; **`--json`** errors instead of prompting.
 
 ### Configuration Flags
 
 | Flag | Description |
 | :--- | :--- |
-| `-o, --output` | **(Required)** The output filename pattern or directory. |
+| `-o, --output` | Output directory or legacy file / `%d` path (optional; default dir `./pngslicer/`). |
+| `-d`, `--dir` | Directory only (same as `-o` for paths like `.` or `out/`). |
+| `-f`, `--format` | Filename under the output dir; must contain one `%d`. |
 | `-w, --min-width` | Smallest allowed width for an extracted image (Filters noise/lines). Default is `50`. |
-| `-e, --min-height`| Smallest allowed height for an extracted image. Default is `50`. |
+| `-h, --min-height`| Smallest allowed height for an extracted image. Default is `50`. |
 | `-a, --min-area` | Smallest allowed absolute area (width * height). Set this instead of w/h to match by payload size. |
-| `-s, --start-at` | The number to start the counter at. Default is `1`. |
-| `-f, --force` | Overwrite existing files without prompting for confirmation. |
+| `-s, --start-at` | First index with `--overwrite`; otherwise gap-fill still uses free indices from existing files. Default is `1`. |
+| `--overwrite` | Overwrite existing files (no short flag); listing shows `(overwritten)`. |
 | `-j, --json` | Changes terminal output to a structured JSON response (useful for pipelines). |
 
 ### Example Run
 
 ```sh
-./pngslicer spritesheet.png -o sprite.png -w 64 -e 64 -j
+./pngslicer spritesheet.png -o sprite.png -w 64 -h 64 -j
 ```
 
 **JSON Output:**
