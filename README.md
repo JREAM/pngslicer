@@ -152,17 +152,17 @@ bats -f "12" tests/extractions.bats
 ```
 
 
-
 ## License
 
 This project is licensed under the [**MIT License**](LICENSE.md).
 
 ---
 
-<div align="center">
-  <img alt="JREAM" src="https://jream.com/jream.jpg" />
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://jream.com/logo.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://jream.com/logo-dark.svg">
+  <img width="20%" alt="JREAM" src="https://jream.com/logo-dark.svg">
+</picture>
 
-&copy;2016 Jesse Boyer [JREAM]([JREAM](https://jream.com))
-
-</div>
+&copy;2016 Jesse Boyer / [JREAM](https://jream.com)
 
